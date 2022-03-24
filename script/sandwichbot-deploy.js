@@ -6,8 +6,8 @@ async function main() {
     //Start deployment, returning a promise that resolves to a contract object
 
     //bsc-test-apeswap
-    const wbnb = '0xae13d989dac2f0debff460ac112a837c89baa7cd';
-    const factory = '0x152349604d49c2af10adee94b918b051104a143e';
+    const wbnb = '0xb4fbf271143f4fbf7b91a5ded31805e42b2208d6';
+    const factory = '0xc35dadb65012ec5796536bd9864ed8773abc74c4';
 
 
     const sandwichBot = await SandwichBot.deploy(wbnb,factory);

@@ -79,6 +79,19 @@ module.exports = {
       gasPrice: 20000000000,
       accounts: [pkey]//私钥
     },
+    rinkeby: {
+      url: "https://rinkeby.infura.io/v3/74d3de6db014405388a32e51189fb6fd",
+      chainId: 4,
+      gasPrice: 20000000000,
+      accounts: [pkey]//私钥
+    },
+
+    goerli: {
+      url: "https://goerli.infura.io/v3/74d3de6db014405388a32e51189fb6fd",
+      chainId: 5,
+      gasPrice: 20000000000,
+      accounts: [pkey]//私钥
+    },
 
     bsc_main: {
       url: "https://bsc-dataseed.binance.org/",

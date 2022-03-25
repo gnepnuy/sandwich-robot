@@ -5,3 +5,4 @@ node_modules
 cache
 artifacts
 privatekey.json
+hardhat.config.js

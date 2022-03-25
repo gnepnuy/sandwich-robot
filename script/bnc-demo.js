@@ -4,6 +4,8 @@ const WebSocket = require('ws');
 const ethers = require('ethers');
 const SandwichBot = require('../artifacts/contracts/SandwichBot.sol/SandwichBot.json');
 const Router = require('../abi/router.json');
+const key = require('../privatekey.json');
+
 
 
 const routerAddess = "0x1b02dA8Cb0d097eB8D57A175b88c7D8b47997506";   //rinkeby-sushi router
@@ -13,8 +15,8 @@ const sandwichBotAddress = '0xED73fDb0649fB03fd7794a6a78CDBaAe9B0c32c0';
 // let url = "https://data-seed-prebsc-1-s1.binance.org:8545";//bsc-test
 let url = "https://goerli.infura.io/v3/74d3de6db014405388a32e51189fb6fd";//rinkeby
 
-let privateKey = "093b45d7137264e77035c11ce3f55a6c299a80dea1129a19cd38a491c8cf87da";
-let privateKey2 = 'bfe84da36759f585688be78f3555a7fc623ba27163224f2736f06b8bbd8e159e';
+let privateKey = key.key1;
+let privateKey2 = key.key2;
 
 let customHttpProvider = new ethers.providers.JsonRpcProvider(url);
 let walletWithProvider = new ethers.Wallet(privateKey, customHttpProvider);

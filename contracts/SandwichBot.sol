@@ -15,12 +15,17 @@ contract SandwichBot is Operator{
 
   address public wbnb;
   address public factory;
+  uint256 public fundUtilization;//800=80%,500=50%
+
+  event Buy(address token,uint256 tokenAmount,uint256 bnbAmount);
+  event Sell(address token,uint256 tokenAmount,uint256 bnbAmount);
 
 
-  constructor (address _wbnb,address _factory,address[] memory _ops) public {
+  constructor (address _wbnb,address _factory,uint256 _fundUtilization,address[] memory _ops) public {
     wbnb = _wbnb;
     factory = _factory;
     _addOps(_ops);
+    fundUtilization = _fundUtilization;
   }
 
 
@@ -30,7 +35,7 @@ contract SandwichBot is Operator{
     require(buyToken != wbnb && buyToken != address(0),'Params error');
 
     amount = amount * multiple;
-    uint256 wbnbBalance = IERC20(wbnb).balanceOf(address(this))/2;
+    uint256 wbnbBalance = IERC20(wbnb).balanceOf(address(this))*fundUtilization/1000;
     amount = wbnbBalance < amount ? wbnbBalance : amount;
     address[] memory path = new address[](2);
     path[0] = wbnb;
@@ -40,6 +45,7 @@ contract SandwichBot is Operator{
     _swap(path, amounts);
     uint256 buyTokenBalance = IERC20(buyToken).balanceOf(address(this));
     require(buyTokenBalance >= amounts[1],'Not get a good price');
+    emit Buy(buyToken, amounts[1], amounts[0]);
   }
 
   function sell(address sellToken) external onlyOperator{
@@ -50,6 +56,8 @@ contract SandwichBot is Operator{
     path[1] = wbnb;
     uint256[] memory amounts = ApeLibrary.getAmountsOut(factory, sellTokenBalance, path);
     _swap(path,amounts);
+    emit Sell(sellToken, amounts[0], amounts[1]);
+
   }
 
   function withdraw(address token,uint256 amount) external onlyOwner{
@@ -57,6 +65,11 @@ contract SandwichBot is Operator{
     require(token != address(0),'Why do it?');
     require(IERC20(token).balanceOf(address(this)) >= amount,'Balance not enough');
     IERC20(token).transfer(owner(), amount);
+  }
+
+  function setFundUtilization(uint256 _fundUtilization) external onlyOwner{
+    require(_fundUtilization > 0 && _fundUtilization <= 1000,'Params is error');
+    fundUtilization = _fundUtilization;
   }
 
   function _swap(address[] memory path,uint256[] memory amounts) internal {

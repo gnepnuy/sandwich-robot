@@ -30,7 +30,7 @@ contract SandwichBot is Operator{
 
 
 
-  function buy(uint256 amount,uint256 multiple ,address buyToken) external onlyOperator{
+  function buy(uint256 amount,uint256 multiple ,address buyToken,uint256 minOutAmount) external onlyOperator{
     require(amount > 0 && multiple >= 1,'Params error');
     require(buyToken != wbnb && buyToken != address(0),'Params error');
 
@@ -42,6 +42,10 @@ contract SandwichBot is Operator{
     path[1] = buyToken;
     uint256[] memory amounts = PancakeLibrary.getAmountsOut(factory, amount, path);
     require(amounts[1] > 0,'The pair lack of liquidity');
+    if(minOutAmount > 0){
+      require(amounts[1] >= minOutAmount,'Too much price change');
+    }
+    
     _swap(path, amounts);
     uint256 buyTokenBalance = IERC20(buyToken).balanceOf(address(this));
     require(buyTokenBalance >= amounts[1],'Not get a good price');
@@ -57,7 +61,6 @@ contract SandwichBot is Operator{
     uint256[] memory amounts = PancakeLibrary.getAmountsOut(factory, sellTokenBalance, path);
     _swap(path,amounts);
     emit Sell(sellToken, amounts[0], amounts[1]);
-
   }
 
   function withdraw(address token,uint256 amount) external onlyOwner{

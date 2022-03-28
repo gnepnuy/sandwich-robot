@@ -157,18 +157,17 @@ function recordTx(transaction){
 }
 
 async function handlerPengdingTx(transaction){
-  //console.log(await customHttpProvider.getBlockNumber())
-
   //console.log('current time:',new Date().getTime()/1000);
-  //console.log("Transaction is pending:",JSON.stringify(transaction))
+  console.log("Transaction is pending:",JSON.stringify(transaction))
   const paths = transaction.contractCall.params.path;
-  //console.log('===================path:',paths);
+  console.log('===================path:',paths);
   const toCoin = paths[paths.length-1];
  
   console.log('hash:',transaction.hash);
 
   //计算出当前交易的滑点
   const amountIn = transaction.value;
+  console.log('amountIn:',amountIn)
 
   const amountOut = await router.getAmountsOut(amountIn,paths);//查询当前能换的数量
   //console.log('current time for get amount after:',new Date().getTime()/1000);

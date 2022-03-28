@@ -22,9 +22,7 @@ library PancakeLibrary {
                 hex'ff',
                 factory,
                 keccak256(abi.encodePacked(token0, token1)),
-                // hex'00fb7f630766e6a796048ea87d01acd3068e8ff67d078148a3fa3f4a84f69bd5' // init code hash -- bsc-main-pancake-v2
-                // hex'f4ccce374816856d11f00e4069e7cada164065686fbef53c6167a63ec2fd8c5b' // init code hash --bsc-test-apeswap
-                hex'e18a34eb0e04b04f7a0ac29a6e80748dca96319b42c54d679cb821dca90c6303' // init code hash --rinkeby-sushiswap
+                hex'00fb7f630766e6a796048ea87d01acd3068e8ff67d078148a3fa3f4a84f69bd5' // init code hash
             ))));
     }
 

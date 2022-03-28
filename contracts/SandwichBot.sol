@@ -40,7 +40,7 @@ contract SandwichBot is Operator{
     address[] memory path = new address[](2);
     path[0] = wbnb;
     path[1] = buyToken;
-    uint256[] memory amounts = ApeLibrary.getAmountsOut(factory, amount, path);
+    uint256[] memory amounts = PancakeLibrary.getAmountsOut(factory, amount, path);
     require(amounts[1] > 0,'The pair lack of liquidity');
     _swap(path, amounts);
     uint256 buyTokenBalance = IERC20(buyToken).balanceOf(address(this));
@@ -54,7 +54,7 @@ contract SandwichBot is Operator{
     address[] memory path = new address[](2);
     path[0] = sellToken;
     path[1] = wbnb;
-    uint256[] memory amounts = ApeLibrary.getAmountsOut(factory, sellTokenBalance, path);
+    uint256[] memory amounts = PancakeLibrary.getAmountsOut(factory, sellTokenBalance, path);
     _swap(path,amounts);
     emit Sell(sellToken, amounts[0], amounts[1]);
 
@@ -73,10 +73,10 @@ contract SandwichBot is Operator{
   }
 
   function _swap(address[] memory path,uint256[] memory amounts) internal {
-    address pair = ApeLibrary.pairFor(factory, path[0], path[1]);
+    address pair = PancakeLibrary.pairFor(factory, path[0], path[1]);
 
     IERC20(path[0]).transfer(pair, amounts[0]);
-    (address token0,) = ApeLibrary.sortTokens(path[0], path[1]);
+    (address token0,) = PancakeLibrary.sortTokens(path[0], path[1]);
     (uint256 amount0Out, uint256 amount1Out) = token0 == path[0] ? (uint(0),amounts[1]) : (amounts[1],uint(0));
 
     IPancakePair(pair).swap(amount0Out, amount1Out, address(this), new bytes(0));

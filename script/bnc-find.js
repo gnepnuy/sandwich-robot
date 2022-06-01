@@ -2,7 +2,6 @@
 const BlocknativeSdk = require('bnc-sdk');
 const WebSocket = require('ws');
 const ethers = require('ethers');
-const SandwichBot = require('../artifacts/contracts/SandwichBot.sol/SandwichBot.json');
 const Router = require('../abi/router.json');
 const key = require('../privatekey.json');
 const targetCoins = require('../targetCoins.json');
@@ -14,27 +13,16 @@ const routerAddess = "0x10ED43C718714eb63d5aA57B78B54704E256024E";   //bsc-main 
 
 
 
-const sandwichBotAddress = '0xf93CD70eDaDD06438A76F0EE2AeA805d77f9748E';//bsc-v1
 
-const urlInfo = {
-  url: 'https://apis.ankr.com/fb68bced829e441e90480ccdf48cc91d/3de214447059c3eade4cffa687e97bf4/binance/full/main',
-  user: 'yunpeng',
-  password: 'zyp6397328',
-  allowInsecure: false
-}
 
 const bscUrl_official = "https://bsc-dataseed2.binance.org/";
 
 let privateKey = key.key1;
-let privateKey2 = key.key2;
 
-let customHttpProvider = new ethers.providers.JsonRpcProvider(urlInfo);
 let officialProvider = new ethers.providers.JsonRpcProvider(bscUrl_official);
 let walletWithProvider = new ethers.Wallet(privateKey, officialProvider);
-let wallet2 = new ethers.Wallet(privateKey2, officialProvider);
 
 
-let sandwichBot = new ethers.Contract(sandwichBotAddress, SandwichBot.abi, walletWithProvider);
 let router = new ethers.Contract(routerAddess,Router.abi,walletWithProvider);
 
 // create options object
@@ -150,10 +138,14 @@ emitter.on("txPool", transaction => handlerPengdingTx(transaction))
 // 这里定义两个map来记录交易的状态
 var txInfo = new Map();
 function recordTx(transaction){
-    //console.log('current time:',new Date().getTime());
+    // console.log('current time:',new Date().getTime());
+    const currentTime =  new Date().toUTCString();
     if(transaction.status == 'pending'){
         txInfo.set(transaction.hash,transaction);
-        //console.log('find new pending transaction，hash:',transaction.hash);
+        for(client of clients){
+          client.send(JSON.stringify(transaction));
+        }
+        console.log('currentTime:',currentTime,' find new pending transaction，hash:',transaction.hash);
     }else{
         if(txInfo.has(transaction.hash)){
             txInfo.delete(transaction.hash);
@@ -167,35 +159,41 @@ function recordTx(transaction){
 
 async function handlerPengdingTx(transaction){
 
-  const paths = transaction.contractCall.params.path;
-  if(paths.length > 2){
-    return
-  }
-  // console.log(transaction)
-  //判断是否为目标币种
-  if(targetCoins.coins.join().indexOf(paths[1]) < 0){
-     // //计算出当前交易的滑点
-    const amountIn = transaction.value;
-    //排除小额交易
-    if(transaction.value < 500000000000000000){
-      return
-    }
-    const amountOut = await router.getAmountsOut(amountIn,paths);//查询当前能换的数量
+  // const paths = transaction.contractCall.params.path;
+  // if(paths.length > 2){
+  //   return
+  // }
+  // // console.log(transaction)
+  // //判断是否为目标币种
+  // if(targetCoins.coins.join().indexOf(paths[1]) < 0){
+  //    // //计算出当前交易的滑点
+  //   const amountIn = transaction.value;
+  //   //排除小额交易
+  //   if(transaction.value < 500000000000000000){
+  //     return
+  //   }
+  //   const amountOut = await router.getAmountsOut(amountIn,paths);//查询当前能换的数量
 
 
-    const expectAmountOut = amountOut[paths.length - 1].toString();//当前能换的数量  
-    const minAmountOut = transaction.contractCall.params.amountOutMin;//设定的最少能换的数量
+  //   const expectAmountOut = amountOut[paths.length - 1].toString();//当前能换的数量  
+  //   const minAmountOut = transaction.contractCall.params.amountOutMin;//设定的最少能换的数量
 
-    const slippage = ((expectAmountOut - minAmountOut) / expectAmountOut) * 100;
-    console.log('slippage:',slippage,'% ,hash:',transaction.hash)
+  //   const slippage = ((expectAmountOut - minAmountOut) / expectAmountOut) * 100;
+  //   console.log('slippage:',slippage,'% ,hash:',transaction.hash)
     
-  }
- 
-    
-    
-    
-
-  
-
-
+  // }
 }
+
+
+//这里提供一个websocket服务
+let WebSocketServer = WebSocket.Server;
+let wss = new WebSocketServer({port: 3008});
+let clients = [];
+
+wss.on('connection',function(client) {
+  console.log('client is connected');
+  clients.push(client);
+
+
+})
+

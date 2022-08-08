@@ -16,6 +16,6 @@
 
 const ethers = require('ethers');
 
-var result = ethers.utils.keccak256('0x7a73ceeeae2a6f41bf61a11913f8b985df425ce27cb73318585733ff600052601b6005f3');
+var result = ethers.utils.keccak256('0x7a73829376e6D1Fd072031105E7F08f5e6F01c90A88D3318585733ff600052601b6005f3');
 console.log(result);
 

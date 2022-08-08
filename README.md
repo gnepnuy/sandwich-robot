@@ -36,4 +36,7 @@ https://bscscan.com/address/0xc1b3cf34c0d3e829e47488f44879555c6beadfcd
 0xBd2949F67DcdC549c6Ebe98696449Fa79D988A9F //mtrg     理由：其它夹子
 0x5B6bf0c7f989dE824677cFBD507D9635965e9cD3 //gmm  理由：其它夹子
 
+## gas token 实现参考文档 
+ https://liaoph.com/how-to-fork-a-chi/
+
 

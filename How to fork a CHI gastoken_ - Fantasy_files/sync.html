@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<!-- saved from url=(0111)https://pippio.com/api/sync?pid=1391&ref=http%3A%2F%2Fpaco0x.org%2Fhow-to-fork-a-chi%2F&it=1&iv=c7qi4vf23uclgrf -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=windows-1252"><meta name="referrer" content="no-referrer"><script>
+		var f = function () {
+	function loadChains(chains, limit, onChainDone) {
+    function newImageLoader(url) {
+        return function () {
+            var e = new Image();
+            addListeners(e);
+            e.src = url;
+        };
+    }
+
+    function newScriptLoader(url) {
+        return function () {
+            var e = document.createElement('script');
+            e.type = 'text/javascript';
+            e.async = true;
+            addListeners(e);
+            e.src = url;
+            document.head.appendChild(e);
+        };
+    }
+
+    function newIframeLoader(url) {
+        return function () {
+            var e = document.createElement('iframe');
+            e.style.display = 'none';
+            e.width = 1;
+            e.height = 1;
+            addListeners(e);
+            e.src = url;
+            document.body.appendChild(e);
+        };
+    }
+
+    function addListeners(e) {
+        addLoadErrorListeners(e, loadNext);
+        if (typeof onChainDone === 'function') {
+            addLoadErrorListeners(e, onChainDone);
+        }
+    }
+
+    function addLoadErrorListeners(e, listener) {
+        if (typeof e.addEventListener === 'function') {
+            e.addEventListener('load', listener, false);
+            e.addEventListener('error', listener, false);
+        } else if (typeof e.attachEvent === 'function') {
+            e.attachEvent('onload', listener);
+            e.attachEvent('onerror', listener);
+        }
+    }
+
+    function loadNext() {
+        var next = loaders.shift();
+        if (typeof next === "function") {
+            setTimeout(next);
+        }
+    }
+
+    var loaders = chains.reduce(function (acc, value) {
+        var mode = value[0];
+        var url = value[1];
+
+        switch (mode) {
+            case 'image':
+                acc.push(newImageLoader(url));
+                break;
+            case 'script':
+                acc.push(newScriptLoader(url));
+                break;
+            case 'iframe':
+                acc.push(newIframeLoader(url));
+                break;
+        }
+        return acc;
+    }, []);
+
+    for (var i = 0; i < limit; i++) {
+        loadNext();
+    }
+}
+
+	var chains = [];
+	chains.push(['image', 'https://ei.rlcdn.com/448046.gif?n\u003D1\u0026partner_site_id\u003D1017\u0026cparams\u003Dplacement%3D1391']);
+	chains.push(['image', 'https://rc.rlcdn.com/456809.gif?n\u003D1\u0026cparams\u003Dplacement%3D1391']);
+	chains.push(['image', 'https://rc.rlcdn.com/456809.gif?n\u003D2\u0026cparams\u003Dplacement%3D1391']);
+	chains.push(['image', 'https://rc.rlcdn.com/456809.gif?n\u003D3\u0026cparams\u003Dplacement%3D1391']);
+	chains.push(['image', 'https://rc.rlcdn.com/456809.gif?n\u003D4\u0026cparams\u003Dplacement%3D1391']);
+	chains.push(['image', 'https://rc.rlcdn.com/456809.gif?n\u003D5\u0026cparams\u003Dplacement%3D1391']);
+	chains.push(['image', 'https://rc.rlcdn.com/456809.gif?n\u003D6\u0026cparams\u003Dplacement%3D1391']);
+	chains.push(['image', 'https://rc.rlcdn.com/456809.gif?n\u003D7\u0026cparams\u003Dplacement%3D1391']);
+	chains.push(['image', 'https://rc.rlcdn.com/456809.gif?n\u003D8\u0026cparams\u003Dplacement%3D1391']);
+	chains.push(['image', 'https://rc.rlcdn.com/456809.gif?n\u003D9\u0026cparams\u003Dplacement%3D1391']);
+	chains.push(['image', 'https://rc.rlcdn.com/456809.gif?n\u003D10\u0026cparams\u003Dplacement%3D1391']);
+	chains.push(['image', 'https://rc.rlcdn.com/456809.gif?n\u003D11\u0026cparams\u003Dplacement%3D1391']);
+	chains.push(['image', 'https://rc.rlcdn.com/456809.gif?n\u003D12\u0026cparams\u003Dplacement%3D1391']);
+	chains.push(['image', 'https://rc.rlcdn.com/456809.gif?n\u003D13\u0026cparams\u003Dplacement%3D1391']);
+	chains.push(['image', 'https://rc.rlcdn.com/456809.gif?n\u003D14\u0026cparams\u003Dplacement%3D1391']);
+	chains.push(['image', 'https://rc.rlcdn.com/456809.gif?n\u003D15\u0026cparams\u003Dplacement%3D1391']);
+	chains.push(['image', 'https://rc.rlcdn.com/456809.gif?n\u003D16\u0026cparams\u003Dplacement%3D1391']);
+	chains.push(['image', 'https://rc.rlcdn.com/456809.gif?n\u003D17\u0026cparams\u003Dplacement%3D1391']);
+	chains.push(['image', 'https://rc.rlcdn.com/456809.gif?n\u003D18\u0026cparams\u003Dplacement%3D1391']);
+	chains.push(['image', 'https://rc.rlcdn.com/456809.gif?n\u003D19\u0026cparams\u003Dplacement%3D1391']);
+
+	loadChains(chains, 10, (typeof onDone === "function") ? onDone : null);
+		};
+
+		if (document.body) { f(); } else { document.addEventListener('DOMContentLoaded', f); }
+	</script>
+</head><body></body></html>
